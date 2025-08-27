@@ -267,7 +267,7 @@ class Dataset:
 
         self.load_schema()
         self.load_data()
-        # self.load_traj()
+        self.load_traj()
 
     def unload(self):
         """
@@ -561,10 +561,10 @@ class Dataset:
 
     def load_traj(self, **kwargs):
         if Path(self.path.parent / 'traj').exists() and self.type != 'traj':
-            self._traj = Dataset(self.path.parent / 'traj', load=False, random_access=self.random_access)
+            self._traj = Dataset(self.path.parent / 'traj')#, load=False)#, random_access=self.random_access)
             self._traj._parameters = self.parameters
-            self._traj._schema = SchemaTraj(self._traj, meta=self.schema._meta, sub_params=self.schema._sub_params,
-                                           fid=self)
+            #self._traj._schema = SchemaTraj(self._traj, meta=self.schema._meta, sub_params=self.schema._sub_params,
+            #                               fid=self)
             self._traj.load_data()
         else:
             self._traj = None

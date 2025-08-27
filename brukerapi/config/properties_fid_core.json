@@ -211,9 +211,23 @@
           [
             "UTE.ppg",
             "UTE3D.ppg",
-            "ZTE.ppg"
+            "ZTE.ppg",
+            "mcw_GARadialv1.ppg"
           ]
         ],
+        "#ACQ_dim==2",
+        "#ACQ_sw_version in ['<PV 5.1>', '<PV 6.0>', '<PV 6.0.1>', '<PV-7.0.0>']"
+      ]
+    },
+    {
+      "cmd": "'RADIAL_3D'" ,
+      "conditions": [
+        ["#PULPROG[1:-1]",
+          [
+            "mcw_GARadialv1.ppg"
+          ]
+        ],
+        "#ACQ_dim==3",
         "#ACQ_sw_version in ['<PV 5.1>', '<PV 6.0>', '<PV 6.0.1>', '<PV-7.0.0>']"
       ]
     },
@@ -313,6 +327,12 @@
       "cmd": "#NPro*#NI*#NR",
       "conditions": [
         "@scheme_id in ['RADIAL']"
+      ]
+    },
+    {
+      "cmd": "#NPro*#ACQ_size[2]*#NI*#NR",
+      "conditions": [
+        "@scheme_id in ['RADIAL_3D']"
       ]
     },
     {
@@ -420,6 +440,20 @@
     },
     {
       "cmd": [
+        "#ACQ_size[0]//2",
+        "#PVM_EncNReceivers",
+        "#ACQ_phase_factor",
+        "#ACQ_size[2]",
+        "#NI",
+        "#NPro // #ACQ_phase_factor",
+        "#NR"
+      ],
+      "conditions": [
+        "@scheme_id=='RADIAL_3D'"
+      ]
+    },
+    {
+      "cmd": [
         "#PVM_EncMatrix[0] * #PVM_EncMatrix[1] // #NSegments",
         "#PVM_EncNReceivers",
         "#NSegments",
@@ -513,6 +547,12 @@
       ]
     },
     {
+      "cmd": [0,2,5,4,3,6,1],
+      "conditions": [
+        "@scheme_id in ['RADIAL_3D']"
+      ]
+    },
+    {
       "cmd": [0,2,3,4,5,1],
       "conditions": [
         "@scheme_id in ['CART_3D', 'ZTE']"
@@ -590,6 +630,19 @@
       ],
       "conditions": [
         "@scheme_id=='RADIAL'"
+      ]
+    },
+    {
+      "cmd": [
+        "#ACQ_size[0]//2",
+        "#NPro",
+        "#ACQ_size[2]",
+        "#NI",
+        "#NR",
+        "#PVM_EncNReceivers"
+      ],
+      "conditions": [
+        "@scheme_id=='RADIAL_3D'"
       ]
     },
     {
@@ -692,7 +745,7 @@
     }
   ],
   "dim_type": [
-        {
+    {
       "cmd": [
         "'k_space_encode_step_0'",
         "'k_space_encode_step_1'",
@@ -702,6 +755,19 @@
       ],
       "conditions": [
         ["@scheme_id",["CART_2D","RADIAL","EPI","SPIRAL","ZTE"]]
+      ]
+    },
+    {
+      "cmd": [
+        "'k_space_encode_step_0'",
+        "'k_space_encode_step_1'",
+        "'k_space_encode_step_2'",
+        "'slice'",
+        "'repetition'",
+        "'channel'"
+      ],
+      "conditions": [
+        ["@scheme_id",["RADIAL_3D"]]
       ]
     },
     {

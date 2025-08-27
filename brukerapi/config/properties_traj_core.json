@@ -1,7 +1,7 @@
 {
   "numpy_dtype": [
     {
-      "cmd": "np.dtype('i4')",
+      "cmd": "np.dtype('float64').newbyteorder('<')",
       "conditions": []
     }
   ],
@@ -13,17 +13,26 @@
           [
             "UTE.ppg",
             "UTE3D.ppg",
-            "ZTE.ppg"
+            "ZTE.ppg",
+            "mcw_GARadialv1.ppg"
           ]
         ],
-        ["#ACQ_sw_version",
-          [
-            "<PV 6.0.1>",
-            "<PV 5.1>"
-          ]
-        ]
+        "#ACQ_dim==2",
+        "#ACQ_sw_version in ['<PV 5.1>', '<PV 6.0>', '<PV 6.0.1>', '<PV-7.0.0>']"
       ]
-    },
+    },     
+    {
+      "cmd": "'RADIAL_3D'" ,
+      "conditions": [
+        ["#PULPROG[1:-1]",
+          [
+            "mcw_GARadialv1.ppg"
+          ]
+        ],
+        "#ACQ_dim==3",
+        "#ACQ_sw_version in ['<PV 5.1>', '<PV 6.0>', '<PV 6.0.1>', '<PV-7.0.0>']"
+      ]
+    }, 
     {
       "cmd": "'SPIRAL'" ,
       "conditions": [
@@ -61,7 +70,7 @@
   "traj_type": [
     {
       "cmd": "'radial'",
-      "conditions": [["@scheme_id",["'RADIAL'","'ZTE'"]]]
+      "conditions": [["@scheme_id",["RADIAL","ZTE","RADIAL_3D"]]]
     },
     {
       "cmd": "'spiral'",
@@ -70,11 +79,11 @@
   ],
   "shape_storage": [
     {
-      "cmd": "(#ACQ_dim,#ACQ_size[0]//2,#NPro)",
-      "conditions": [["@scheme_id",["RADIAL","ZTE"]]]
+      "cmd": "(#PVM_TrajDims,#PVM_Matrix[0],#NPro)",
+      "conditions": [["@scheme_id",["RADIAL","ZTE","RADIAL_3D"]]]
     },
     {
-      "cmd": "(#ACQ_dim,#ACQ_size[0]//2,#PVM_SpiralNbOfInterleaves)",
+      "cmd": "(#ACQ_dim,#PVM_TrajSamples,#PVM_SpiralNbOfInterleaves)",
       "conditions": [["@scheme_id",["SPIRAL"]]]
     }
   ],
@@ -85,17 +94,17 @@
           1,
           2
         ],
-      "conditions": [["@scheme_id",["RADIAL","ZTE","SPIRAL"]]]
+      "conditions": [["@scheme_id",["RADIAL","RADIAL_3D","ZTE","SPIRAL"]]]
     }
   ],
   "final": [
     {
       "cmd": [
-        "#ACQ_dim",
-        "#ACQ_size[0]//2",
+        "#PVM_TrajDims",
+        "#PVM_Matrix[0]",
         "#NPro"
       ],
-      "conditions": [["@scheme_id",["RADIAL","ZTE"]]]
+      "conditions": [["@scheme_id",["RADIAL","RADIAL_3D","ZTE"]]]
     },
     {
       "cmd": [

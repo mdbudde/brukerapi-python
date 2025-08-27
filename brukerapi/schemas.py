@@ -68,7 +68,10 @@ class Schema():
     def __init__(self, dataset):
 
         # chceck if dataset contains all the required properties
+        print(dataset)
         for property in REQUIRED_PROPERTIES[dataset.type]:
+            value = getattr(dataset, property, None)
+            print(f"{property}: {value}")
             if not hasattr(dataset, property):
                 raise MissingProperty(property)
         self._dataset = dataset
